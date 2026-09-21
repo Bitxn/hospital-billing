@@ -10,17 +10,25 @@ Run:  python api.py   (serves on http://127.0.0.1:5000)
 """
 from __future__ import annotations
 
+import os
 import uuid
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 
 import database
 import pricing
 from billing import BillingEngine
 from models import Patient
 
+_STATIC = os.path.join(os.path.dirname(__file__), "static")
 app = Flask(__name__)
 _engine = BillingEngine()
+
+
+@app.get("/")
+def home():
+    """Serve the web UI."""
+    return send_from_directory(_STATIC, "index.html")
 
 
 @app.get("/services")

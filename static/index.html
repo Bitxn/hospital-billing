@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospital Billing</title>
+<style>
+  :root{
+    --bg:#f4f6f8; --card:#ffffff; --ink:#12303b; --muted:#5b7683;
+    --line:#e2e8ec; --teal:#0e7c86; --teal-dark:#0a5d64; --accent:#e8f4f5;
+    --ok:#0e7c86; --shadow:0 1px 3px rgba(18,48,59,.08),0 8px 24px rgba(18,48,59,.06);
+    --radius:12px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+       background:var(--bg);color:var(--ink);line-height:1.5}
+  header{background:var(--teal);color:#fff;padding:18px 24px;display:flex;align-items:center;gap:12px}
+  header .logo{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.18);
+       display:grid;place-items:center;font-size:20px}
+  header h1{font-size:1.15rem;margin:0;font-weight:650;letter-spacing:-.01em}
+  header .sub{margin-left:auto;font-size:.8rem;opacity:.85}
+  .wrap{max-width:1040px;margin:24px auto;padding:0 20px;display:grid;
+        grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:820px){.wrap{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+        box-shadow:var(--shadow);padding:20px}
+  .card h2{margin:0 0 14px;font-size:.95rem;text-transform:uppercase;letter-spacing:.06em;
+        color:var(--muted);font-weight:600}
+  label{display:block;font-size:.82rem;color:var(--muted);margin:12px 0 5px;font-weight:500}
+  input,select{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;
+        font-size:.92rem;color:var(--ink);background:#fff;font-family:inherit}
+  input:focus,select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px var(--accent)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .cov-val{color:var(--teal);font-weight:600}
+  .svc{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .svc:last-child{border-bottom:none}
+  .svc input[type=checkbox]{width:18px;height:18px;accent-color:var(--teal);flex:none;cursor:pointer}
+  .svc .name{flex:1;font-size:.9rem}
+  .svc .price{color:var(--muted);font-size:.82rem;font-variant-numeric:tabular-nums;min-width:78px;text-align:right}
+  .svc .qty{width:58px;padding:5px 7px;text-align:center}
+  .btn{width:100%;margin-top:18px;padding:12px;border:none;border-radius:9px;background:var(--teal);
+        color:#fff;font-size:.95rem;font-weight:600;cursor:pointer;transition:.15s}
+  .btn:hover{background:var(--teal-dark)}
+  .btn:disabled{opacity:.6;cursor:default}
+  .invoice{grid-column:1/-1}
+  .inv-empty{color:var(--muted);text-align:center;padding:30px 0;font-size:.9rem}
+  .inv-head{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+        padding-bottom:12px;border-bottom:2px solid var(--line);margin-bottom:12px}
+  .inv-head .who b{font-size:1.05rem}
+  .inv-head .meta{font-size:.8rem;color:var(--muted);text-align:right}
+  table{width:100%;border-collapse:collapse;font-size:.9rem}
+  th,td{padding:8px 6px;text-align:left}
+  th{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);border-bottom:1px solid var(--line)}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  tbody tr{border-bottom:1px solid var(--line)}
+  .totals{margin-top:14px;margin-left:auto;width:320px;max-width:100%}
+  .totals div{display:flex;justify-content:space-between;padding:5px 0;font-size:.9rem}
+  .totals .credit{color:var(--muted)}
+  .totals .grand{border-top:2px solid var(--ink);margin-top:6px;padding-top:10px;
+        font-size:1.15rem;font-weight:700;color:var(--teal-dark)}
+  .err{background:#fdecec;color:#a12626;border:1px solid #f5c6c6;padding:10px 12px;
+        border-radius:8px;font-size:.85rem;margin-top:12px;display:none}
+  .foot{grid-column:1/-1;text-align:center;color:var(--muted);font-size:.78rem;padding:6px 0 20px}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">🏥</div>
+  <h1>Hospital Billing</h1>
+  <span class="sub">Itemized invoicing &middot; insurance &middot; tax</span>
+</header>
+
+<div class="wrap">
+  <!-- Patient -->
+  <section class="card">
+    <h2>Patient</h2>
+    <label for="pname">Full name</label>
+    <input id="pname" placeholder="e.g. Jane Doe" value="Jane Doe">
+    <div class="row2">
+      <div>
+        <label for="pins">Insurance provider</label>
+        <input id="pins" placeholder="SELF-PAY" value="BlueCross">
+      </div>
+      <div>
+        <label for="pdisc">Discount ($)</label>
+        <input id="pdisc" type="number" min="0" step="1" value="0">
+      </div>
+    </div>
+    <label for="pcov">Insurance coverage — <span class="cov-val" id="covVal">80%</span></label>
+    <input id="pcov" type="range" min="0" max="100" value="80">
+  </section>
+
+  <!-- Services -->
+  <section class="card">
+    <h2>Services rendered</h2>
+    <div id="svcList"><div class="inv-empty">Loading catalog…</div></div>
+    <button class="btn" id="genBtn">Generate invoice</button>
+    <div class="err" id="err"></div>
+  </section>
+
+  <!-- Invoice -->
+  <section class="card invoice">
+    <h2>Invoice</h2>
+    <div id="invoice"><div class="inv-empty">Fill in the patient and pick services, then generate an invoice.</div></div>
+  </section>
+
+  <div class="foot">Hospital Billing System &middot; demo UI</div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const money = n => "$" + Number(n).toFixed(2);
+let CATALOG = [];
+
+$("#pcov").addEventListener("input", e => $("#covVal").textContent = e.target.value + "%");
+
+async function loadCatalog(){
+  try{
+    CATALOG = await (await fetch("/services")).json();
+  }catch(e){ $("#svcList").innerHTML = '<div class="inv-empty">Could not load the service catalog. Is the API running?</div>'; return; }
+  $("#svcList").innerHTML = CATALOG.map(s => `
+    <div class="svc">
+      <input type="checkbox" data-code="${s.code}">
+      <span class="name">${s.description}</span>
+      <span class="price">${money(s.unit_price)}</span>
+      <input class="qty" type="number" min="1" value="1" data-qty="${s.code}">
+    </div>`).join("");
+}
+
+function selectedServices(){
+  return [...document.querySelectorAll('.svc input[type=checkbox]:checked')].map(cb => ({
+    code: cb.dataset.code,
+    quantity: parseInt(document.querySelector(`[data-qty="${cb.dataset.code}"]`).value || "1", 10),
+  }));
+}
+
+function showErr(msg){ const e = $("#err"); e.textContent = msg; e.style.display = "block"; }
+function clearErr(){ $("#err").style.display = "none"; }
+
+function renderInvoice(inv){
+  const rows = inv.items.map(i => `
+    <tr>
+      <td>${i.description}</td>
+      <td class="num">${i.quantity}</td>
+      <td class="num">${money(i.unit_price)}</td>
+      <td class="num">${money(i.amount)}</td>
+    </tr>`).join("");
+  $("#invoice").innerHTML = `
+    <div class="inv-head">
+      <div class="who"><b>${inv.patient.name}</b><br><span class="meta">${inv.patient.insurance_provider} · ${Math.round(inv.patient.coverage*100)}% coverage</span></div>
+      <div class="meta">Invoice<br><b>#${inv.id}</b></div>
+    </div>
+    <table>
+      <thead><tr><th>Service</th><th class="num">Qty</th><th class="num">Unit</th><th class="num">Amount</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="totals">
+      <div><span>Subtotal</span><span>${money(inv.subtotal)}</span></div>
+      <div class="credit"><span>Insurance paid</span><span>−${money(inv.insurance_paid)}</span></div>
+      <div class="credit"><span>Discount</span><span>−${money(inv.discount)}</span></div>
+      <div><span>Tax</span><span>${money(inv.tax)}</span></div>
+      <div class="grand"><span>Total due</span><span>${money(inv.total)}</span></div>
+    </div>`;
+}
+
+async function generate(){
+  clearErr();
+  const name = $("#pname").value.trim();
+  if(!name){ showErr("Enter the patient's name."); return; }
+  const services = selectedServices();
+  if(!services.length){ showErr("Pick at least one service."); return; }
+
+  const btn = $("#genBtn"); btn.disabled = true; btn.textContent = "Generating…";
+  try{
+    const pRes = await fetch("/patients", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        name,
+        insurance_provider: $("#pins").value.trim() || "SELF-PAY",
+        coverage: Number($("#pcov").value) / 100,
+      }),
+    });
+    const patient = await pRes.json();
+    if(!pRes.ok){ showErr(patient.error || "Could not create patient."); return; }
+
+    const iRes = await fetch("/invoices", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        patient_id: patient.id,
+        services,
+        discount: Number($("#pdisc").value) || 0,
+      }),
+    });
+    const invoice = await iRes.json();
+    if(!iRes.ok){ showErr(invoice.error || "Could not create invoice."); return; }
+    renderInvoice(invoice);
+  }catch(e){
+    showErr("Network error — is the API running?");
+  }finally{
+    btn.disabled = false; btn.textContent = "Generate invoice";
+  }
+}
+
+$("#genBtn").addEventListener("click", generate);
+loadCatalog();
+</script>
+</body>
+</html>
