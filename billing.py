@@ -2,7 +2,7 @@
 
 Given a patient and the services they received, it builds an Invoice: subtotal,
 insurance adjustment, optional discount, tax, and the final patient total. Kept
-free of I/O so every step is unit-testable.
+free of I/O so every step is unit-testable.g4wt3t5
 """
 from __future__ import annotations
 
