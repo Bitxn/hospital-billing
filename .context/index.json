@@ -1,0 +1,341 @@
+{
+  "name": "hospital-billing",
+  "root": "C:\\Users\\Bitan\\Desktop\\hospital-billing",
+  "summary": "A small, self-contained hospital billing engine. It turns a patient plus a list\nof rendered services into an itemized invoice \u2014 applying the service catalog,\ninsurance coverage, discounts, and tax \u2014 and exposes it over a small REST API.",
+  "modules": [
+    {
+      "name": "(root)",
+      "summary": "6 Python file(s): api.py, billing.py, database.py, main.py",
+      "files": [
+        {
+          "path": "api.py",
+          "language": "Python",
+          "loc": 92,
+          "summary": "api.py \u2014 a small Flask REST API over the billing engine.",
+          "symbols": [
+            {
+              "name": "home",
+              "kind": "function",
+              "line": 29
+            },
+            {
+              "name": "services",
+              "kind": "function",
+              "line": 35
+            },
+            {
+              "name": "create_patient",
+              "kind": "function",
+              "line": 40
+            },
+            {
+              "name": "create_invoice",
+              "kind": "function",
+              "line": 56
+            },
+            {
+              "name": "get_invoice",
+              "kind": "function",
+              "line": 83
+            }
+          ],
+          "imports": [
+            "__future__",
+            "os",
+            "uuid",
+            "flask",
+            "database",
+            "pricing",
+            "billing",
+            "models"
+          ],
+          "content_hash": "91f562bd6993ab47"
+        },
+        {
+          "path": "billing.py",
+          "language": "Python",
+          "loc": 77,
+          "summary": "billing.py \u2014 the billing engine (all the money math lives here).",
+          "symbols": [
+            {
+              "name": "build_line_item",
+              "kind": "function",
+              "line": 16
+            },
+            {
+              "name": "subtotal",
+              "kind": "function",
+              "line": 28
+            },
+            {
+              "name": "insurance_adjustment",
+              "kind": "function",
+              "line": 33
+            },
+            {
+              "name": "apply_discount",
+              "kind": "function",
+              "line": 38
+            },
+            {
+              "name": "tax",
+              "kind": "function",
+              "line": 43
+            },
+            {
+              "name": "BillingEngine",
+              "kind": "class",
+              "line": 48
+            },
+            {
+              "name": "create_invoice",
+              "kind": "function",
+              "line": 52
+            }
+          ],
+          "imports": [
+            "__future__",
+            "uuid",
+            "pricing",
+            "models"
+          ],
+          "content_hash": "c6420c051aff9957"
+        },
+        {
+          "path": "database.py",
+          "language": "Python",
+          "loc": 56,
+          "summary": "database.py \u2014 tiny JSON-file persistence for patients and invoices.",
+          "symbols": [
+            {
+              "name": "_empty",
+              "kind": "function",
+              "line": 14
+            },
+            {
+              "name": "_load",
+              "kind": "function",
+              "line": 18
+            },
+            {
+              "name": "_save",
+              "kind": "function",
+              "line": 27
+            },
+            {
+              "name": "save_patient",
+              "kind": "function",
+              "line": 32
+            },
+            {
+              "name": "get_patient",
+              "kind": "function",
+              "line": 38
+            },
+            {
+              "name": "save_invoice",
+              "kind": "function",
+              "line": 42
+            },
+            {
+              "name": "get_invoice",
+              "kind": "function",
+              "line": 48
+            },
+            {
+              "name": "list_invoices",
+              "kind": "function",
+              "line": 52
+            }
+          ],
+          "imports": [
+            "__future__",
+            "json",
+            "pathlib"
+          ],
+          "content_hash": "469ddf5e3ef747c4"
+        },
+        {
+          "path": "main.py",
+          "language": "Python",
+          "loc": 59,
+          "summary": "main.py \u2014 CLI demo entrypoint.",
+          "symbols": [
+            {
+              "name": "format_invoice",
+              "kind": "function",
+              "line": 10
+            },
+            {
+              "name": "main",
+              "kind": "function",
+              "line": 33
+            }
+          ],
+          "imports": [
+            "__future__",
+            "billing",
+            "models"
+          ],
+          "content_hash": "ffb72eb93a78ad73"
+        },
+        {
+          "path": "models.py",
+          "language": "Python",
+          "loc": 71,
+          "summary": "models.py \u2014 the core data structures for the billing domain.",
+          "symbols": [
+            {
+              "name": "Patient",
+              "kind": "class",
+              "line": 13
+            },
+            {
+              "name": "__post_init__",
+              "kind": "function",
+              "line": 22
+            },
+            {
+              "name": "to_dict",
+              "kind": "function",
+              "line": 26
+            },
+            {
+              "name": "LineItem",
+              "kind": "class",
+              "line": 32
+            },
+            {
+              "name": "amount",
+              "kind": "function",
+              "line": 40
+            },
+            {
+              "name": "to_dict",
+              "kind": "function",
+              "line": 43
+            },
+            {
+              "name": "Invoice",
+              "kind": "class",
+              "line": 49
+            },
+            {
+              "name": "to_dict",
+              "kind": "function",
+              "line": 59
+            }
+          ],
+          "imports": [
+            "__future__",
+            "dataclasses"
+          ],
+          "content_hash": "60d327aa709f8381"
+        },
+        {
+          "path": "pricing.py",
+          "language": "Python",
+          "loc": 42,
+          "summary": "pricing.py \u2014 the hospital service catalog.",
+          "symbols": [
+            {
+              "name": "get_price",
+              "kind": "function",
+              "line": 21
+            },
+            {
+              "name": "get_description",
+              "kind": "function",
+              "line": 29
+            },
+            {
+              "name": "list_services",
+              "kind": "function",
+              "line": 34
+            }
+          ],
+          "imports": [
+            "__future__"
+          ],
+          "content_hash": "f127e17c282cdd2c"
+        }
+      ],
+      "depends_on": []
+    },
+    {
+      "name": "tests",
+      "summary": "1 Python file(s): test_billing.py",
+      "files": [
+        {
+          "path": "tests/test_billing.py",
+          "language": "Python",
+          "loc": 62,
+          "summary": "test_billing.py \u2014 unit tests for the billing math.",
+          "symbols": [
+            {
+              "name": "test_line_item_amount",
+              "kind": "function",
+              "line": 9
+            },
+            {
+              "name": "test_subtotal_sums_items",
+              "kind": "function",
+              "line": 14
+            },
+            {
+              "name": "test_tax_rate",
+              "kind": "function",
+              "line": 19
+            },
+            {
+              "name": "test_build_line_item_rejects_zero_quantity",
+              "kind": "function",
+              "line": 23
+            },
+            {
+              "name": "test_unknown_service_code",
+              "kind": "function",
+              "line": 28
+            },
+            {
+              "name": "test_patient_rejects_bad_coverage",
+              "kind": "function",
+              "line": 33
+            },
+            {
+              "name": "test_full_invoice_with_insurance_and_discount",
+              "kind": "function",
+              "line": 38
+            },
+            {
+              "name": "test_self_pay_has_no_insurance",
+              "kind": "function",
+              "line": 55
+            }
+          ],
+          "imports": [
+            "__future__",
+            "pytest",
+            "billing",
+            "models"
+          ],
+          "content_hash": "134ffc787841e83f"
+        }
+      ],
+      "depends_on": []
+    }
+  ],
+  "entry_points": [
+    "main.py"
+  ],
+  "languages": {
+    "Python": 7
+  },
+  "file_count": 7,
+  "total_loc": 459,
+  "model_used": "oneport-managed (gemini)",
+  "version": 1,
+  "generated_at": "2026-09-24T12:56:08.838426+00:00",
+  "fingerprint": "96184394ae9f361bf1543246c9e0dc7f316d1f0d",
+  "truncated": false
+}

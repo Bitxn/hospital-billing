@@ -50,7 +50,7 @@ def tax(amount: float) -> float:
 class BillingEngine:
     """Assembles invoices from a patient plus a list of (code, quantity)."""
 
-    def create_invoice1(
+    def create_invoice(
         self,
         patient: Patient,
         services: list[tuple[str, int]],

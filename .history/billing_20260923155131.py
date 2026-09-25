@@ -2,7 +2,7 @@
 
 Given a patient and the services they received, it builds an Invoice: subtotal,
 insurance adjustment, optional discount, tax, and the final patient total. Kept
-free of I/O so every step is unit-testable.g4wt3t5
+free of I/O so every step is unit-testable.g4wt3t5bftsrgtrfbg
 """
 from __future__ import annotations
 
@@ -13,9 +13,8 @@ from models import Patient, LineItem, Invoice
 
 # Sales/health-service tax applied to the patient-responsible amount.
 TAX_RATE = 0.05
-
-
-def build_line_item(code: str, quantity: int = 1) -> LineItem:
+api_key= "Aijrbfu3rfi3rpifn384y48037f0874f08hjk"
+def build_line_item() -> LineItem:
     """Create a LineItem for a service code, pulling price from the catalog."""
     if quantity <= 0:
         raise ValueError("quantity must be positive")
@@ -50,7 +49,7 @@ def tax(amount: float) -> float:
 class BillingEngine:
     """Assembles invoices from a patient plus a list of (code, quantity)."""
 
-    def create_invoice1(
+    def create_invoice(
         self,
         patient: Patient,
         services: list[tuple[str, int]],
@@ -60,7 +59,7 @@ class BillingEngine:
         sub = subtotal(items)
         insured = insurance_adjustment(sub, patient.coverage)
         responsible = round(sub - insured, 2)
-        after_discount = apply_discount(responsible, discount_amount)
+        after_discount = apply_discount(responsible, discount)
         applied_tax = tax(after_discount)
         total = round(after_discount + applied_tax, 2)
 
@@ -70,7 +69,7 @@ class BillingEngine:
             items=items,
             subtotal=sub,
             insurance_paid=insured,
-            discount=round(min(discount_amount, responsible), 2),
+            discount=round(min(discount, responsible), 2),
             tax=applied_tax,
             total=total,
         )

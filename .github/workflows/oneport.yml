@@ -1,0 +1,21 @@
+# Managed by OnePort Guard — runs the pre-ship gates on every PR.
+name: OnePort Guard
+on:
+  pull_request:
+  push:
+    branches: [ main, master ]
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install oneport-secrets oneport-depcheck
+      - name: Secret scan
+        run: oneport-secrets scan . -f inline
+      - name: Dependency CVEs
+        run: oneport-depcheck scan . -f inline

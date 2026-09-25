@@ -1,5 +1,7 @@
 # Hospital Billing System
 
+[![Gated by OnePort](https://img.shields.io/badge/gated%20by-OnePort-018c37)](https://github.com/Bitxn/Oneport-Desktop) <!-- oneport-guard-badge -->
+
 A small, self-contained hospital billing engine. It turns a patient plus a list
 of rendered services into an itemized invoice — applying the service catalog,
 insurance coverage, discounts, and tax — and exposes it over a small REST API.

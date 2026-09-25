@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"C:\\Users\\Bitan\\Desktop\\oneport-desktop\\dist\\OnePort\\OnePort.exe\" __tool oneport-secrets scan . -f inline --no-triage || (echo 'OnePort Guard: a secret was detected in your edit \u2014 remove and rotate it before continuing.' >&2; exit 2)"
+          }
+        ]
+      }
+    ]
+  }
+}
