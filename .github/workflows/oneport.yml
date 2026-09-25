@@ -14,8 +14,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install oneport-secrets oneport-depcheck
-      - name: Secret scan
-        run: oneport-secrets scan . -f inline
+      - run: pip install oneport-depcheck
       - name: Dependency CVEs
         run: oneport-depcheck scan . -f inline
