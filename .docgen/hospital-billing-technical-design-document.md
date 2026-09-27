@@ -1,6 +1,6 @@
 # hospital-billing — Technical Design Document
 
-`CONFIDENTIAL` · **Technical Design Document** · v1.0 · _Draft_ · 2026-09-24
+`CONFIDENTIAL` · **Technical Design Document** · v1.0 · _Draft_ · 2026-09-25
 
 ## Document Control
 
@@ -11,7 +11,7 @@
 | Version | 1.0 |
 | Status | Draft |
 | Classification | Confidential |
-| Date | 2026-09-24 |
+| Date | 2026-09-25 |
 | Author(s) | Bitxn |
 | Reviewer(s) | — |
 | Approver(s) | — |
@@ -20,7 +20,7 @@
 
 | Version | Date | Author | Notes |
 | --- | --- | --- | --- |
-| 1.0 | 2026-09-24 | Bitxn | Initial version. |
+| 1.0 | 2026-09-25 | Bitxn | Initial version. |
 
 ## At a Glance
 

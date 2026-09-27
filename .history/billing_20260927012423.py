@@ -2,7 +2,7 @@
 
 Given a patient and the services they received, it builds an Invoice: subtotal,
 insurance adjustment, optional discount, tax, and the final patient total. Kept
-free of I/O so every step is unit-testable.
+free of I/O so every step is unit-testable.g4wt3t5
 """
 from __future__ import annotations
 
@@ -54,13 +54,13 @@ class BillingEngine:
         self,
         patient: Patient,
         services: list[tuple[str, int]],
-        discount: float = 0.0,
+        discount_amount: float = 0.0,
     ) -> Invoice:
         items = [build_line_item(code, qty) for code, qty in services]
         sub = subtotal(items)
         insured = insurance_adjustment(sub, patient.coverage)
         responsible = round(sub - insured, 2)
-        after_discount = apply_discount(responsible, discount)
+        after_discount = apply_discount(responsible, discount_amount)
         applied_tax = tax(after_discount)
         total = round(after_discount + applied_tax, 2)
 
@@ -70,7 +70,7 @@ class BillingEngine:
             items=items,
             subtotal=sub,
             insurance_paid=insured,
-            discount=round(min(discount, responsible), 2),
+            discount=round(min(discount_amount, responsible), 2),
             tax=applied_tax,
             total=total,
         )
